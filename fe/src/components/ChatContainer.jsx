@@ -6,6 +6,7 @@ import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
+import ZaloSticker from "./ZaloSticker";
 
 const ChatContainer = () => {
   const {
@@ -71,7 +72,7 @@ const ChatContainer = () => {
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div className={`flex flex-col ${!message.emoji && "chat-bubble"}`}>
               {message.image && (
                 <img
                   src={message.image}
@@ -80,6 +81,12 @@ const ChatContainer = () => {
                 />
               )}
               {message.text && <p>{message.text}</p>}
+
+              {
+                message.emoji && (
+                  <ZaloSticker eid={message.emoji}/>
+                )
+              }
             </div>
           </div>
         ))}

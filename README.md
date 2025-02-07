@@ -1,4 +1,4 @@
-# Web Chat Application
+# Web Chat Application 💡
 
 A real-time web chat application built using **Socket.io**, **Express.js**, and **React.js**.
 
@@ -54,7 +54,7 @@ cd fe
 npm run dev
 ```
 
-The React app should now be running at `http://localhost:3000/` and the backend at `http://localhost:5173/`.
+The React app should now be running at `http://localhost:5000/` and the backend at `http://localhost:3000/`.
 
 ## Folder Structure
 ```

@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 class MessageService {
 
     // send message
-    static sendMessage = async ({ text, image, receiverId, senderId }) => {
+    static sendMessage = async ({ text, image, receiverId, senderId,emoji='' }) => {
         // code here
 
         // save to clound dinary
@@ -14,7 +14,8 @@ class MessageService {
             text,
             image: '',
             receiverId,
-            senderId
+            senderId,
+            emoji
         });
 
         await newMessage.save();

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
+import ZaloSticker from "./ZaloSticker";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
@@ -48,7 +49,61 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full relative">
+
+      {/* list stickers */}
+      {
+        text && (
+      <div className="w-full relative z-50">
+        <div className="flex gap-4 absolute translate-y-[-110%] py-3 px-2 w-full overflow-x-auto bg-base-200 rounded custom-scrollbar">
+          <ZaloSticker onClick={() =>
+          sendMessage({
+            text: '',
+            emoji: '42832'
+          })} className={'cursor-pointer w-[100px]'} eid={42832} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42833'
+          })} className={'cursor-pointer w-[100px]'} eid={42833} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42834'
+          })} className={'cursor-pointer w-[100px]'} eid={42834} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42835'
+          })} className={'cursor-pointer w-[100px]'} eid={42835} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42836'
+          })} className={'cursor-pointer w-[100px]'} eid={42836} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42837'
+          })} className={'cursor-pointer w-[100px]'} eid={42837} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42838'
+          })} className={'cursor-pointer w-[100px]'} eid={42838} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42839'
+          })} className={'cursor-pointer w-[100px]'} eid={42839} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42840'
+          })} className={'cursor-pointer w-[100px]'} eid={42840} />
+          <ZaloSticker onClick={() => sendMessage({
+            text: '',
+            emoji: '42841'
+          })} className={'cursor-pointer w-[100px]'} eid={42841} />
+
+        </div>
+      </div>
+        )
+      }
+
+
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">

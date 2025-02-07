@@ -14,6 +14,7 @@ class MessageController {
             data: await MessageService.sendMessage({
                 text: req.body.text,
                 image: req.body.image,
+                emoji: req.body.emoji,
                 receiverId: req.params.id,
                 senderId: req.user._id
             })

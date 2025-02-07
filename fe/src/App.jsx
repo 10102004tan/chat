@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import TestPage from './pages/TestPage';
 import Navbar from './components/Navbar';
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/useAuthStore";
@@ -28,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
         <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+        <Route path='/test' element={<TestPage />} />
       </Routes>
       <Toaster />
     </div>
