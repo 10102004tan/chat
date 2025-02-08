@@ -84,7 +84,7 @@ const ChatContainer = () => {
 
               {
                 message.emoji && (
-                  <ZaloSticker eid={message.emoji}/>
+                  <ZaloSticker url={message.emoji}/>
                 )
               }
             </div>

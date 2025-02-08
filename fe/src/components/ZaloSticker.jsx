@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const ZaloSticker = ({
-    eid,
+    url,
     size=130,
     className,
     onClick,
@@ -13,7 +13,7 @@ const ZaloSticker = ({
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const sprite = spriteRef.current;
-    const url = `https://zalo-api.zadn.vn/api/emoticon/sprite?eid=${eid}&size=${size}`;
+    // const url = `https://zalo-api.zadn.vn/api/emoticon/sprite?eid=${eid}&size=${size}`;
     
     sprite.src = url; // Đường dẫn ảnh sprite
     const frameWidth = size;

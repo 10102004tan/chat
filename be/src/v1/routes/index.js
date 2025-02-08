@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/api/v1/messages",require("./message"));
+router.use("/api/v1/stickers",require("./sticker"));
 router.use("/api/v1/auth",require("./access"));
 
 module.exports = router;

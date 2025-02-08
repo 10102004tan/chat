@@ -1,14 +1,28 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Search, Send, Sticker, X } from "lucide-react";
 import toast from "react-hot-toast";
 import ZaloSticker from "./ZaloSticker";
+import { useStickerStore } from "../store/useStickerStore";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
+  const { getCategories, categoriesStickers, key, setKey,setSelectedCategory,selectedCategory,stickers,getStickersByCategoryId,isStickersLoading,
+    recentStickers,addRecentSticker } = useStickerStore();
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  useEffect(() => {
+    if(selectedCategory){
+      getStickersByCategoryId(selectedCategory.cid);
+    }
+  }, [selectedCategory]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -31,7 +45,7 @@ const MessageInput = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imagePreview) return;
+    if (!text.trim() && !imagePreview && !sticker) return;
 
     try {
       await sendMessage({
@@ -48,62 +62,34 @@ const MessageInput = () => {
     }
   };
 
+  const handleSendSticker = async (sticker) => {
+
+    if (!sticker) return;
+
+    try {
+      await sendMessage({
+        text: "",
+        image: null,
+        emoji: sticker.url,
+      });
+
+      document.getElementById('sticker-modal').close();
+
+      // Add to recent stickers
+      addRecentSticker(sticker);
+      // Clear form
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
+  };
+
+  const handleSearchSticker = async (e) => {
+    e.preventDefault();
+    getCategories();
+  };
+
   return (
-    <div className="p-4 w-full relative">
-
-      {/* list stickers */}
-      {
-        text && (
-      <div className="w-full relative z-50">
-        <div className="flex gap-4 absolute translate-y-[-110%] py-3 px-2 w-full overflow-x-auto bg-base-200 rounded custom-scrollbar">
-          <ZaloSticker onClick={() =>
-          sendMessage({
-            text: '',
-            emoji: '42832'
-          })} className={'cursor-pointer w-[100px]'} eid={42832} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42833'
-          })} className={'cursor-pointer w-[100px]'} eid={42833} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42834'
-          })} className={'cursor-pointer w-[100px]'} eid={42834} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42835'
-          })} className={'cursor-pointer w-[100px]'} eid={42835} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42836'
-          })} className={'cursor-pointer w-[100px]'} eid={42836} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42837'
-          })} className={'cursor-pointer w-[100px]'} eid={42837} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42838'
-          })} className={'cursor-pointer w-[100px]'} eid={42838} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42839'
-          })} className={'cursor-pointer w-[100px]'} eid={42839} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42840'
-          })} className={'cursor-pointer w-[100px]'} eid={42840} />
-          <ZaloSticker onClick={() => sendMessage({
-            text: '',
-            emoji: '42841'
-          })} className={'cursor-pointer w-[100px]'} eid={42841} />
-
-        </div>
-      </div>
-        )
-      }
-
-
+    <div className="p-4 w-full">
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -141,6 +127,16 @@ const MessageInput = () => {
             onChange={handleImageChange}
           />
 
+
+          {/* for stickers */}
+          <button
+            type="button"
+            className={`hidden sm:flex btn btn-circle`}
+          >
+            <Sticker size={20} onClick={() => document.getElementById('sticker-modal').showModal()} />
+          </button>
+
+
           <button
             type="button"
             className={`hidden sm:flex btn btn-circle
@@ -158,6 +154,125 @@ const MessageInput = () => {
           <Send size={22} />
         </button>
       </form>
+
+      <dialog id="sticker-modal" className="modal">
+        <div className="modal-box custom-scrollbar">
+          <div role="tablist" className="tabs tabs-boxed mb-3">
+            <div role="tablist" className="tabs tabs-boxed mb-3">
+              <a
+                role="tab"
+                className={`tab ${selectedTab === 0 ? "tab-active" : ""}`}
+                onClick={() => setSelectedTab(0)}
+              >
+                Categories
+              </a>
+              <a
+                role="tab"
+                className={`tab ${selectedTab === 1 ? "tab-active" : ""}`}
+                onClick={() => setSelectedTab(1)}
+              >
+                Recent
+              </a>
+              <a
+                role="tab"
+                className={`tab ${selectedTab === 2 ? "tab-active" : ""}`}
+                onClick={() => setSelectedTab(2)}
+              >
+                Stickers
+              </a>
+            </div>
+          </div>
+           {/* content for Categories */}
+          {
+            selectedTab === 0 && (
+              <div className="h-[500px]">
+                {/* input search */}
+                <form onSubmit={handleSearchSticker} >
+                  <label className="input input-bordered flex items-center gap-2 ">
+                    <input type="text" value={key} onChange={(e) => setKey(e.target.value)} className="grow" placeholder="Search" />
+                    <Search className="cursor-pointer" onClick={handleSearchSticker} size={20} />
+                  </label>
+                </form>
+
+                <div className="grid grid-cols-4 gap-5 h-full overflow-y-auto custom-scrollbar">
+                  {
+                    categoriesStickers.map((category, i) => (
+                      <div onClick={()=>{
+                        setSelectedCategory(category);
+                        setSelectedTab(2);
+                      }} className="cursor-pointer text-center" key={i}>
+                        <img className="w-full" src={category.img} alt={category.name} />
+                        <h3 className="text-sm">{category.name}</h3>
+                      </div>
+                    ))
+                  }
+                  </div>
+              </div>)
+          }
+          
+          {/* content for  Recent*/}
+          {
+            selectedTab === 1 && (
+              <div className="h-[500px] justify-center items-center">
+                {
+                  recentStickers.length === 0 && (
+                    <p className="py-4">No recent stickers found</p>
+                  )
+                }
+                {
+                  recentStickers.length > 0 && (
+                    <div className="grid grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                      {
+                        recentStickers.map((sticker, i) => (
+                          <div onClick={()=>handleSendSticker(sticker.url)} className="cursor-pointer text-center" key={i}>
+                            <ZaloSticker className={'w-full'} url={sticker.url} />
+                          </div>
+                        ))
+                      }
+                    </div>
+                  )
+                }
+              </div>
+            )
+          }
+
+          {/* content for  Stickers*/}
+          {
+            selectedTab === 2 && (
+              <div className="h-[500px] flex justify-center items-center">
+                {
+                  isStickersLoading && (
+                    <span className="loading loading-spinner loading-lg"></span>
+                  )
+                }
+                {
+                  !isStickersLoading && stickers.length === 0 && (
+                    <p className="py-4">No have stickers, please try again</p>
+                  )
+                }
+               {
+                  !isStickersLoading && stickers.length > 0 && (
+                    <div className="grid grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                      {
+                        stickers.map((sticker, i) => (
+                          <div onClick={()=>handleSendSticker(sticker)} className="cursor-pointer text-center" key={i}>
+                            <ZaloSticker className={'w-full'} url={sticker.url} />
+                          </div>
+                        ))
+                      }
+                    </div>
+                  )
+               }
+              </div>
+            )
+          }
+
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
     </div>
   );
 };
