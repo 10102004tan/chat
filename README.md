@@ -1,6 +1,9 @@
 # Web Chat Application 💡
-
+![Chat Application](./images/sticker-zalo.png)
 A real-time web chat application built using **Socket.io**, **Express.js**, and **React.js**.
+
+
+
 
 ## Features
 - Real-time messaging with WebSockets (Socket.io)
@@ -9,6 +12,7 @@ A real-time web chat application built using **Socket.io**, **Express.js**, and 
 - Typing indicators
 - Message history storage (optional)
 - Responsive UI with React.js
+- Message sticker
 
 ## Technologies Used
 - **Frontend**: React.js, Socket.io-client,Tailwind CSS
@@ -150,6 +154,10 @@ chat/
 | POST   | /api/v1/messages/send/:id | Send a message    |
 | GET   | /api/v1/messages/users | Get users' messages      |
 | GET    | /api/v1/messages/:id   | Get a specific message    |
+| GET    | /api/v1/stickers/categories   | Get all categories sticker    |
+| GET    | /api/v1/stickers/:id   | Get list stickers by category sticker id    |
+
+
 
 
 ## WebSocket Events
