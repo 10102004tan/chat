@@ -8,6 +8,7 @@ class MessageController {
 
     // send message
     sendMessage = async (req, res) => {
+        console.log('req.body:', req.body);
         // code here
         return new OK({
             message: 'Message sent successfully',
