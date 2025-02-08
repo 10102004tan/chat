@@ -74,6 +74,7 @@ chat/
 │   │   │   ├── auth/              # Authentication middleware and utilities
 │   │   │   │   ├── index.js
 │   │   │   ├── configs/           # Configuration files
+│   │   │   │   ├── cloudinary.config.js
 │   │   │   │   ├── mongodb.config.js
 │   │   │   ├── controllers/       # Route controllers
 │   │   │   │   ├── access.controller.js
@@ -84,6 +85,8 @@ chat/
 │   │   │   ├── databases/         # Database initialization
 │   │   │   │   ├── init.mongodb.js
 │   │   │   ├── helpers/           # Helper functions
+│   │   │   ├── middleware/        # Middleware
+│   │   │   │   ├── upload.middleware.js
 │   │   │   ├── models/            # Mongoose models
 │   │   │   │   ├── message.model.js
 │   │   │   │   ├── user.model.js
@@ -99,6 +102,8 @@ chat/
 │   │   │   │   ├── access.service.js
 │   │   │   │   ├── message.service.js
 │   │   │   │   ├── socket.service.js
+│   │   │   │   ├── sticker.service.js
+│   │   │   │   ├── upload.service.js
 │   │   │   ├── utils/             # Utility functions
 │   │   │   │   ├── index.js
 │   │   │   │   ├── reasonPhrases.js
@@ -138,6 +143,7 @@ chat/
 │   │   ├── store/         # Zustand stores
 │   │   │   ├── useAuthStore.js
 │   │   │   ├── useChatStore.js
+│   │   │   ├── useStickerStore.js
 │   ├── tailwind.config.js # Tailwind CSS configuration
 │   ├── vite.config.js     # Vite configuration
 │── README.md          # Project README
