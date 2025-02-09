@@ -9,6 +9,10 @@ router.post('/signup', asynHandler(accessController.signUp));
 
 router.post('/login', asynHandler(accessController.signIn));
 
+router.post('/google', asynHandler(accessController.oauthWithGoogle));
+
+router.post('/github', asynHandler(accessController.oauthWithGithub));
+
 router.post('/logout',protectRoute, asynHandler(accessController.signOut));
 
 router.get('/check',protectRoute, asynHandler(accessController.checkAuth));

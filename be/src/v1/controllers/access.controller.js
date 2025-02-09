@@ -49,6 +49,35 @@ class AuthController {
         }).send(res);
     }
 
+
+    oauthWithGoogle = async (req, res, next) => {
+        return new OK({
+            message: 'Sign in with google success',
+            data: await AccessSevice.oauthWithGoogle(req.body).then((data) => {
+                res.cookie('jwt', data.jwt, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
+                });
+                return data.user;
+            })
+        }).send(res);
+    };
+
+    oauthWithGithub = async (req, res, next) => {
+        return new OK({
+            message: 'Sign in with Github success',
+            data: await AccessSevice.oauthWithGithub(req.body).then((data) => {
+                res.cookie('jwt', data.jwt, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
+                });
+                return data.user;
+            })
+        }).send(res);
+    };
+
     /**
      * This is a function to sign out
      * @param {*} req 

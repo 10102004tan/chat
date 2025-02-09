@@ -40,6 +40,8 @@ const generateToken = async (userId) => {
     return token;
 };
 
+
+
 /**
  * This is a function to handle async function
  * @param {*} fn 
