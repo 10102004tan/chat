@@ -46,15 +46,77 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    oauthWithGoogle: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/google", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Login Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
+        }
+    },
+    oauthWithGithub: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/github", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Login Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
+        }
+    },
     logout: async () => {
         try {
             await axiosInstance.post("/auth/logout");
             set({ authUser: null });
+
+
             get().disconnectSocket();
             toast.success("Logout Success");
         } catch (error) {
             console.log(error);
             toast.error("Error in logout");
+        }
+    },
+    signup: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/signup", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Signup Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
         }
     },
     /**

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
+import { GoogleLogout } from "react-google-login";
 
+const clientId = "125164124407-7anngbpjfbtna37u7f0hk5v4gpfocit1.apps.googleusercontent.com";
 const Navbar = () => {
 
     const { authUser, logout } = useAuthStore();
@@ -41,10 +43,18 @@ const Navbar = () => {
                                     <span className="hidden sm:inline">Profile</span>
                                 </Link>
 
-                                <button className="flex gap-2 items-center" onClick={logout}>
-                                    <LogOut className="size-5" />
-                                    <span className="hidden sm:inline">Logout</span>
-                                </button>
+
+                                {/* logout */}
+                                <GoogleLogout clientId={clientId} 
+                                buttonText="Logout"
+                                onLogoutSuccess={logout}
+                                render={renderProps => (
+                                    <button className="flex gap-2 items-center" onClick={renderProps.onClick}>
+                                        <LogOut className="size-5" />
+                                        <span className="hidden sm:inline">Logout</span>
+                                    </button>
+                                )}
+                                />
                             </>
                         )}
                     </div>
