@@ -154,14 +154,17 @@ chat/
 ## API Endpoints (if applicable)
 | Method | Endpoint  | Description           |
 |--------|----------|-----------------------|
-| POST   | /api/v1/login   | User authentication   |
-| POST   | /api/v1/signup | Register a new user       |
-| POST   | /api/v1/logout | Logout a user    |
+| POST   | /api/v1/auth/login   | User authentication   |
+| POST   | /api/v1/auth/signup | Register a new user       |
+| POST   | /api/v1/auth/logout | Logout a user    |
+| POST    | /api/v1/auth/github   | OAuth github access    |
+| POST    | /api/v1/auth/google   | OAuth google access    |
 | POST   | /api/v1/messages/send/:id | Send a message    |
 | GET   | /api/v1/messages/users | Get users' messages      |
 | GET    | /api/v1/messages/:id   | Get a specific message    |
 | GET    | /api/v1/stickers/categories   | Get all categories sticker    |
 | GET    | /api/v1/stickers/:id   | Get list stickers by category sticker id    |
+
 
 
 
