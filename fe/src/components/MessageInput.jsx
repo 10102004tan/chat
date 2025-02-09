@@ -11,11 +11,12 @@ const MessageInput = () => {
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
   const { getCategories, categoriesStickers, key, setKey,setSelectedCategory,selectedCategory,stickers,getStickersByCategoryId,isStickersLoading,
-    recentStickers,addRecentSticker } = useStickerStore();
+    recentStickers,addRecentSticker,getRecentStickers } = useStickerStore();
   const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     getCategories();
+    getRecentStickers();
   }, []);
 
   useEffect(() => {
@@ -225,7 +226,7 @@ const MessageInput = () => {
                     <div className="grid grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar">
                       {
                         recentStickers.map((sticker, i) => (
-                          <div onClick={()=>handleSendSticker(sticker.url)} className="cursor-pointer text-center" key={i}>
+                          <div onClick={()=>handleSendSticker(sticker)} className="cursor-pointer text-center" key={i}>
                             <ZaloSticker className={'w-full'} url={sticker.url} />
                           </div>
                         ))
