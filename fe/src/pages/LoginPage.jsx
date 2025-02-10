@@ -11,7 +11,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const { login, isLoggingIn,oauthWithGoogle } = useAuthStore();
+  const { login, isLoggingIn, oauthWithGoogle } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +19,10 @@ const LoginPage = () => {
   };
 
   const onSuccess = async (response) => {
-    const { xc: { id_token }, wt: { cu:email } } = response;
+    const { xc: { id_token }, wt: { cu: email } } = response;
     oauthWithGoogle({ idToken: id_token, email });
   };
-  const onFailure = async (response) => {};
+  const onFailure = async (response) => { };
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
@@ -104,6 +104,13 @@ const LoginPage = () => {
             </button>
           </form>
 
+          {/* forget password */}
+          <div className="text-end">
+            <Link to="/forgot-password" className="link link-primary">
+              Forgot password?
+            </Link>
+          </div>
+
           {/* for login oauth */}
           <div className="flex flex-col items-center justify-center gap-4">
             <p>or</p>
@@ -116,6 +123,8 @@ const LoginPage = () => {
               <GithubOAuth />
             </div>
           </div>
+
+
 
           <div className="text-center">
             <p className="text-base-content/60">

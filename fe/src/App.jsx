@@ -10,6 +10,8 @@ import { Loader } from 'lucide-react';
 import SignupPage from './pages/SignupPage';
 import { gapi } from 'gapi-script';
 import GitHubCallback from './pages/GitHubCallback';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 function App() {
@@ -45,6 +47,8 @@ function App() {
         <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path='/signup' element={!authUser ? <SignupPage /> : <Navigate to="/" />} />
         <Route path='/auth/github/callback' element={!authUser ? <GitHubCallback /> : <Navigate to="/" />} />
+        <Route path='/forgot-password' element={!authUser ? <ForgotPasswordPage /> : <Navigate to="/" />} />
+        <Route path='/reset-password' element={!authUser ? <ResetPasswordPage /> : <Navigate to="/" />} />
         <Route path='/test' element={<TestPage />} />
       </Routes>
       <Toaster />
