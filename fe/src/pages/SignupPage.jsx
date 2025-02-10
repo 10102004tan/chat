@@ -5,12 +5,16 @@ import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { GoogleOAuth, GithubOAuth } from "../components/OAuths";
 import { randomPassword } from "../helpers";
+import toast from "react-hot-toast";
 
 const SignupPage = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
+        fullName: "",
+        confirmPassword: "",
     });
     const { login, isLoggingIn, signup,oauthWithGithub,oauthWithGoogle } = useAuthStore();
 
@@ -19,7 +23,15 @@ const SignupPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        login(formData);
+
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }  
+
+        const { email, password, fullName } = formData;
+        signup({ email, password, fullName });
     };
 
     const onSuccess = (response) => {
@@ -65,11 +77,11 @@ const SignupPage = () => {
                                     <User className="h-5 w-5 text-base-content/40" />
                                 </div>
                                 <input
-                                    type="email"
+                                    type="text"
                                     className={`input input-bordered w-full pl-10`}
                                     placeholder="John Doe"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    value={formData.fullName}
+                                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -130,18 +142,18 @@ const SignupPage = () => {
                                     <Lock className="h-5 w-5 text-base-content/40" />
                                 </div>
                                 <input
-                                    type={showPassword ? "text" : "password"}
+                                    type={showConfirmPassword ? "text" : "password"}
                                     className={`input input-bordered w-full pl-10`}
                                     placeholder="••••••••"
-                                    value={formData.password}
-                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    value={formData.confirmPassword}
+                                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                                 />
                                 <button
                                     type="button"
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                                    onClick={() => setShowPassword(!showPassword)}
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 >
-                                    {showPassword ? (
+                                    {showConfirmPassword ? (
                                         <EyeOff className="h-5 w-5 text-base-content/40" />
                                     ) : (
                                         <Eye className="h-5 w-5 text-base-content/40" />
