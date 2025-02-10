@@ -157,6 +157,8 @@ chat/
 | POST   | /api/v1/auth/login   | User authentication   |
 | POST   | /api/v1/auth/signup | Register a new user       |
 | POST   | /api/v1/auth/logout | Logout a user    |
+| POST   | /api/v1/auth/forgot-password | Get url forgot password    |
+| POST   | /api/v1/auth/reset-password | Reset password    |
 | POST    | /api/v1/auth/github   | OAuth github access    |
 | POST    | /api/v1/auth/google   | OAuth google access    |
 | POST   | /api/v1/messages/send/:id | Send a message    |
