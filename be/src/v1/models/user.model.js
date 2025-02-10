@@ -25,6 +25,15 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.pre('save', function(next){
+  // set user avatar
+  if (!this.profilePic) {
+      const firtName = this.fullName.split(' ')[0];
+      this.profilePic = `https://ui-avatars.com/api/?name=${firtName}size=128`;
+  }
+  next();
+});
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
