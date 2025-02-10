@@ -12,6 +12,7 @@ export const useAuthStore = create((set, get) => ({
     onlineUsers: [],
     socket: null,
     isCheckingAuth: true,
+    isResetPassword: true,
     checkAuth: async () => {
         try {
             const res = await axiosInstance.get("/auth/check");
@@ -46,16 +47,97 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    oauthWithGoogle: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/google", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Login Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
+        }
+    },
+    oauthWithGithub: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/github", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Login Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
+        }
+    },
     logout: async () => {
         try {
             await axiosInstance.post("/auth/logout");
             set({ authUser: null });
+
+
             get().disconnectSocket();
             toast.success("Logout Success");
         } catch (error) {
             console.log(error);
             toast.error("Error in logout");
         }
+    },
+    signup: async (data) => {
+        // set state
+        set({ isSigningUp: true });
+        try {
+            // api call
+            const res = await axiosInstance.post("/auth/signup", data);
+            set({
+                authUser: res.data.data
+            })
+            toast.success("Signup Success");
+            // connect to socket
+            get().connectSocket();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        finally {
+            // set state
+            set({ isSigningUp: false });
+        }
+    },
+    forgotPassword: async (data) => {
+        try {
+            await axiosInstance.post("/auth/forgot-password", data);
+            toast.success("Password reset link sent to email");
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    },
+    resetPassword: async (data) => {
+        set({ isResetPassword: true });
+        try {
+            await axiosInstance.post("/auth/reset-password", data);
+            toast.success("Password reset successful");
+            set({ isResetPassword: false });
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+
     },
     /**
      * connect to socket

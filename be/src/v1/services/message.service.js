@@ -1,20 +1,33 @@
 'use strict';
 const Message = require('../models/message.model');
 const User = require('../models/user.model');
+const { uploadImageFromFile } = require('./upload.service');
 
 class MessageService {
 
     // send message
-    static sendMessage = async ({ text, image, receiverId, senderId }) => {
+    static sendMessage = async ({ text, image, receiverId, senderId,emoji='' }) => {
         // code here
 
+        console.log('image:', image);
         // save to clound dinary
+        let imageStore;
+        if (image) {
+            imageStore = await uploadImageFromFile({
+                path:image,
+                folderName: `chatApp/${senderId}/${receiverId}`,
+            });
+        }
+
+        console.log('imageStore:', imageStore);
+
 
         const newMessage = new Message({
             text,
-            image: '',
+            image: imageStore?.url,
             receiverId,
-            senderId
+            senderId,
+            emoji
         });
 
         await newMessage.save();

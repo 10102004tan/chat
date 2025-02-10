@@ -8,12 +8,14 @@ class MessageController {
 
     // send message
     sendMessage = async (req, res) => {
+        console.log('req.body:', req.body);
         // code here
         return new OK({
             message: 'Message sent successfully',
             data: await MessageService.sendMessage({
                 text: req.body.text,
                 image: req.body.image,
+                emoji: req.body.emoji,
                 receiverId: req.params.id,
                 senderId: req.user._id
             })

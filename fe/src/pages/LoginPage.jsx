@@ -3,6 +3,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { GithubOAuth, GoogleOAuth } from "../components/OAuths";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,12 +11,18 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const { login,isLoggingIn  } = useAuthStore();
+  const { login, isLoggingIn, oauthWithGoogle } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(formData);
   };
+
+  const onSuccess = async (response) => {
+    const { xc: { id_token }, wt: { cu: email } } = response;
+    oauthWithGoogle({ idToken: id_token, email });
+  };
+  const onFailure = async (response) => { };
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
@@ -96,6 +103,28 @@ const LoginPage = () => {
               )}
             </button>
           </form>
+
+          {/* forget password */}
+          <div className="text-end">
+            <Link to="/forgot-password" className="link link-primary">
+              Forgot password?
+            </Link>
+          </div>
+
+          {/* for login oauth */}
+          <div className="flex flex-col items-center justify-center gap-4">
+            <p>or</p>
+            <div className="flex gap-4">
+              <GoogleOAuth
+                buttonText="Login with Google"
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+              />
+              <GithubOAuth />
+            </div>
+          </div>
+
+
 
           <div className="text-center">
             <p className="text-base-content/60">
