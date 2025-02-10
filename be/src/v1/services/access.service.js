@@ -4,6 +4,8 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../auth');
 const { verifyTokenGoogle, verifyCodeGithub } = require('../helpers');
+const OTPService = require('./otp.service');
+const EmailService = require('./email.service');
 
 const CLIENT_ID = 'YOUR_GITHUB_CLIENT_ID';
 const CLIENT_SECRET = 'YOUR_GITHUB_CLIENT_SECRET';
@@ -146,6 +148,32 @@ class AccessSevice {
             message: 'Sign out success',
         };
     }
+
+    static async forgotPassword({ email }) {
+        await EmailService.sendTokenEmail({ email });
+        return 1;
+    }
+
+    static async resetPassword({ email, token, password }) {
+        const user = await User.findOne({ email }).lean();
+        if (!user) {
+            throw new BadRequestError("Invalid email");
+        }
+
+        const isValidToken = await OTPService.verifyOTP({
+            email,
+            otp: token,
+        });
+
+        if (!isValidToken) {
+            throw new BadRequestError("Invalid token or expired, please try again");
+        }
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        await User.findOneAndUpdate({ email }, { password: hashPassword });
+        return 1;
+    };
 }
 
 module.exports = AccessSevice;

@@ -121,8 +121,6 @@ program
             console.log(chalk.green(`✅ Seed file '${seedFile}' executed successfully`));
         });
 
-        // close cmd
-        process.exit(0);
 });
 
 

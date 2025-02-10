@@ -1,17 +1,25 @@
 'use strict';
 
-const seedDatabase = require("../databases/init.seed.mongodb");
 const Template = require("../models/template.model");
-const {htmlEmailToken} = require("../utils/template.html");
+const { htmlEmailToken, htmlResetPassword } = require("../utils/template.html");
+const mongoose = require('../databases/init.mongodb');
 
 const seedTemplates = [{
     name: 'EMAIL_TOKEN',
-    html:htmlEmailToken,
+    html: htmlEmailToken,
+    status: 'active'
+}, {
+    name: 'EMAIL_RESET_PASSWORD',
+    html: htmlResetPassword,
     status: 'active'
 }];
 
-const func = async () => {
-    await Template.deleteMany({});
-    await Template.insertMany(seedTemplates);
+const seedDatabase = async () => {
+    try {
+        await Template.deleteMany({});
+        await Template.insertMany(seedTemplates);
+    } catch (error) {
+        console.log(error);
+    }
 };
-seedDatabase(func);
+seedDatabase();

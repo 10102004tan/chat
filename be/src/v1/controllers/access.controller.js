@@ -100,6 +100,28 @@ class AuthController {
             data: req.user
         }).send(res);
     }
+
+    /**
+     * Forgot password
+     */
+    forgotPassword = async (req, res, next) => {
+        return new OK({
+            message: 'Forgot password success',
+            data: await AccessSevice.forgotPassword(req.body)
+        }).send(res);
+    };   
+
+
+    /**
+     * Reset password
+     */
+
+    resetPassword = async (req, res, next) => {
+        return new OK({
+            message: 'Reset password success',
+            data: await AccessSevice.resetPassword(req.body)
+        }).send(res);
+    };
 }
 
 module.exports = new AuthController();
