@@ -7,7 +7,7 @@ A real-time web chat application built using **Socket.io**, **Express.js**, and 
 
 ## Features
 - Real-time messaging with WebSockets (Socket.io)
-- User authentication (JWT)
+- User authentication (JWT),OAuth Github and Google
 - Online user tracking
 - Typing indicators
 - Message history storage (optional)
